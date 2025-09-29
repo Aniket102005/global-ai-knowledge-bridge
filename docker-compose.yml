@@ -1,21 +1,20 @@
-version: '3.8'
-
 services:
   backend:
     build: ./backend
+    container_name: backend
+    working_dir: /app                 # Ensure working dir is /app
     ports:
-      - '8000:8000'
-    volumes:
-      - ./backend/app:/app
-    env_file:
-      - .env
+      - "8000:8000"                  # Exposes FastAPI
+    environment:
+      - PYTHONUNBUFFERED=1
+    command: uvicorn main:app --host 0.0.0.0 --port 8000
+
+    restart: unless-stopped
+    mem_limit: 1g                     # Limit memory usage to 1GB
 
   frontend:
     build: ./frontend
+    container_name: frontend
     ports:
-      - '3000:3000'
-    volumes:
-      - ./frontend/src:/app/src
-    depends_on:
-      - backend
-
+      - "3000:80"                     # Maps Nginx port 80 to host port 3000
+    restart: unless-stopped
