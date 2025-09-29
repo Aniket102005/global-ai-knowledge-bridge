@@ -1,0 +1,19 @@
+# Python artifacts
+__pycache__/
+*.pyc
+venv/
+*.egg-info/
+
+# Node artifacts
+node_modules/
+build/
+.pnp.*
+
+# Environment files
+.env
+.env*.local
+
+# IDE files
+.idea/
+.vscode/
+
