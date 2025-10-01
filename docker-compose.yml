@@ -1,20 +1,40 @@
+version: '3.8'
+
+# This section defines a custom network for our services
+networks:
+  app-network:
+    driver: bridge
+
 services:
   backend:
     build: ./backend
     container_name: backend
-    working_dir: /app                 # Ensure working dir is /app
+    # We are re-adding the port mapping now that we are not using host network mode
     ports:
-      - "8000:8000"                  # Exposes FastAPI
-    environment:
-      - PYTHONUNBUFFERED=1
-    command: uvicorn main:app --host 0.0.0.0 --port 8000
-
+      - "8000:8000"
+    volumes:
+      - ./backend/app:/app
+    env_file:
+      - .env
+    # This assigns the backend to our custom network
+    networks:
+      - app-network
+    # This DNS fix will now work reliably on the custom network
+    dns:
+      - 8.8.8.8
     restart: unless-stopped
-    mem_limit: 1g                     # Limit memory usage to 1GB
 
   frontend:
     build: ./frontend
     container_name: frontend
     ports:
-      - "3000:80"                     # Maps Nginx port 80 to host port 3000
+      - "3000:80"
+    volumes:
+      - ./frontend/src:/app/src
+    # This assigns the frontend to our custom network
+    networks:
+      - app-network
+    # Now that they are on the same network, we can restore the dependency
+    depends_on:
+      - backend
     restart: unless-stopped
