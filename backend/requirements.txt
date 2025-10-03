@@ -4,3 +4,4 @@ python-dotenv
 requests
 PyMuPDF
 python-multipart
+fastapi-cors # <-- Add this line
