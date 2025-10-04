@@ -11,14 +11,13 @@ CEREBRAS_API_KEY = os.getenv("CEREBRAS_API_KEY")
 
 # --- OpenRouter Configuration (for Llama) ---
 OPENROUTER_API_URL = "https://openrouter.ai/api/v1/chat/completions"
-OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY") # Add this to your .env file
-LLAMA_MODEL_NAME = "meta-llama/llama-3-8b-instruct" # Official model name on OpenRouter
+OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY")
+LLAMA_MODEL_NAME = "meta-llama/llama-3-8b-instruct"
 
 def summarize_text_with_cerebras(text_to_summarize: str) -> str:
-    # This function is already working perfectly. No changes needed.
+    # This function is working perfectly.
     if not CEREBRAS_API_KEY:
         return "Error: CEREBRAS_API_KEY is not set."
-    # ... (rest of the function is omitted for brevity)
     headers = {"Authorization": f"Bearer {CEREBRAS_API_KEY}", "Content-Type": "application/json"}
     payload = {"model": CEREBRAS_MODEL_NAME, "messages": [{"role": "user", "content": f"Please provide a concise summary of the following document:\n\n{text_to_summarize}"}]}
     try:
@@ -30,22 +29,26 @@ def summarize_text_with_cerebras(text_to_summarize: str) -> str:
     except requests.exceptions.RequestException as e:
         return f"Error: An exception occurred: {e}"
 
+
 def get_answer_with_llama(context: str, question: str, language: str) -> str:
     """
-    Sends document context and a user's question to Llama 3 via the OpenRouter API.
+    Sends document context and a user's question to Llama 3 with a stricter prompt.
     """
     if not OPENROUTER_API_KEY:
         return "Error: OPENROUTER_API_KEY is not set in your .env file."
 
+    # --- THIS IS THE NEW, IMPROVED PROMPT ---
     prompt = f"""
-    Based *only* on the context provided below, answer the user's question in simple, clear {language}.
+    You are an expert assistant. Your task is to answer the user's question based *only* on the provided text.
+    Your entire response must be in simple, clear {language}. 
+    Do not use any other languages. Do not mix languages.
 
-    Context:
+    Provided Text:
     ---
     {context}
     ---
 
-    Question: "{question}"
+    User's Question: "{question}"
     """
     
     headers = {
@@ -60,7 +63,6 @@ def get_answer_with_llama(context: str, question: str, language: str) -> str:
         ]
     }
 
-    # The 'try' and 'except' must be at the same indentation level
     try:
         response = requests.post(OPENROUTER_API_URL, headers=headers, json=payload, timeout=120)
         
@@ -71,4 +73,3 @@ def get_answer_with_llama(context: str, question: str, language: str) -> str:
             
     except requests.exceptions.RequestException as e:
         return f"Error: Could not connect to OpenRouter. Details: {e}"
-    

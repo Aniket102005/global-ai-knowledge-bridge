@@ -17,7 +17,8 @@ function App() {
   };
 
   return (
-    <div className="bg-gray-900 text-white min-h-screen font-sans">
+    // THE FIX IS HERE: Added flex, items-center, and justify-center to center the content block.
+    <div className="bg-gray-900 text-white min-h-screen font-sans flex items-center justify-center">
       <div className="container mx-auto p-4 md:p-8">
         <header className="text-center mb-10">
           <h1 className="text-4xl md:text-5xl font-bold text-cyan-400">
@@ -75,4 +76,3 @@ function App() {
 }
 
 export default App;
-
