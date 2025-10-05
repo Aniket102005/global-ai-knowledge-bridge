@@ -55,31 +55,32 @@ It powers the summarization engine — the “magic” that simplifies global kn
 With excellent multilingual understanding and instruction-following, it enables users worldwide to interact naturally with complex reports — in their own languages.
 
 ### 🐳 **Docker: The Delivery Vehicle for Global Access**
-We containerized both the frontend (Nginx) and backend (FastAPI) using Docker.  
+
+We containerized both the **frontend (Nginx)** and **backend (FastAPI)** using Docker.  
 With a single command, any organization — from NGOs to universities — can deploy the entire platform:
 
 ```bash
 docker-compose up --build
 This democratizes not only the knowledge, but the tool itself.
 
-##⚙️ How to Run Locally
-##1. Clone the Repository
+⚙️ How to Run Locally
+1️⃣ Clone the Repository
 bash
 Copy code
 git clone [your-github-repo-link-here]
 cd global-ai-knowledge-bridge
-##2. Set Up Environment Variables
+2️⃣ Set Up Environment Variables
 Create a .env file in the project root and add your API keys:
 
 bash
 Copy code
 CEREBRAS_API_KEY='your-cerebras-key'
 OPENROUTER_API_KEY='your-openrouter-key'
-3. Build and Run with Docker
+3️⃣ Build and Run with Docker
 bash
 Copy code
 docker-compose up --build
-4. Access the Application
+4️⃣ Access the Application
 Frontend: http://localhost:3000
 
 Backend API Docs: http://localhost:8000/docs
@@ -101,10 +102,9 @@ Copy code
                ┌────────────────┼────────────────┐
                ▼                ▼                ▼
         Cerebras AI        Meta Llama 3       Database (optional)
-   (Summarization Engine)  (Multilingual Q&A) 
+   (Summarization Engine)  (Multilingual Q&A)
 💡 Vision
 The Global AI Knowledge Bridge envisions a future where:
 
-Every person — regardless of language or background — can access and understand global knowledge.
-
-AI doesn’t just translate, it transforms information into something meaningful for all.
+🌍 Every person — regardless of language or background — can access and understand global knowledge.
+🤖 AI doesn’t just translate; it transforms information into something meaningful for all.
